@@ -10,13 +10,14 @@ void main(){
 }
 
 class Infix_to_postfix{
-
+	RegExp _numeric = RegExp(r'^-?[0-9]+$');
   List<String> pilha = List.filled(200, ''), operadores = List.filled(200, '');
   int toppilha = 0, topoperadores = 0;
 
   String convert(var expressao){
   for (var x in expressao.split(' ')) {
     pushpilha(x, pilha);
+		
   }
   var expressaofinal = '';
   for(String x in pilha){
@@ -48,4 +49,18 @@ class Infix_to_postfix{
     if (topoperadores != 1 / 0) topoperadores--;
     return i;
   }
+	int preced(ch) {
+   if(ch == '+' || ch == '-') {
+      return 1;             
+   }else if(ch == '*' || ch == '/') {
+      return 2;            
+   }else if(ch == '^') {
+      return 3;            
+   }else {
+      return 0;
+   }
+		bool isNumeric(String str) {
+return _numeric.hasMatch(str);
+}
+}
 }
