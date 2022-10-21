@@ -26,7 +26,9 @@ class Infix_to_postfix{
       for (var x in expressao.split(' ')) {
         if (x == '+' || x == '-' || x == '*' || x == '/') {
           if(preced(x, operadores[topoperadores])){
-            pushpilha(x, pilha);
+            String i = popOperacoes(operadores);
+            pushOperacoes(x, operadores);
+            pushOperacoes(i, operadores);
           }else{
             pushOperacoes(x, operadores);
           }
