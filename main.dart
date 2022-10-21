@@ -14,30 +14,31 @@ class Infix_to_postfix{
   List<String> pilha = List.filled(200, ''), operadores = List.filled(200, '');
   int toppilha = 0, topoperadores = 0;
 
-  int preced(x) {
-    if (x == '+' || x == '-') {
-      return 1;
-    } else if (x == '*' || x == '/') {
-      return 2;
+  bool preced(var x, var y) {
+    if ((x=='*' || x=='/') && (y=='+' || y=='-') ) {
+      return true;
     } else {
-      return 0;
+      return false;
     }
   }
 
     String convert(var expressao){
       for (var x in expressao.split(' ')) {
-        if (x == '+' && x != '-' && x != '*' && x != '/') {
-        pushOperacoes(x, pilha);
-        }
-        if (regex.hasMatch(x)) {
+        if (x == '+' || x == '-' || x == '*' || x == '/') {
+          if(preced(x, operadores[topoperadores])){
+            pushpilha(x, pilha);
+          }else{
+            pushOperacoes(x, operadores);
+          }
+        }else {
         pushpilha(x, pilha);
         }
-        else {
-          print("Invalido");
+
+      }
+      for(String x in operadores){
+        if(x == '+' || x == '-' || x == '*' || x == '/'){
+          pushpilha(x, pilha);
         }
-
-        pushpilha(x, pilha);
-
       }
       var expressaofinal = '';
       for(String x in pilha){
@@ -48,26 +49,26 @@ class Infix_to_postfix{
     }
 
     void pushpilha(String i, List<String> pilha) {
-      if (pilha[0] != 1 / 0) toppilha++;
+      if (pilha[0] != '') toppilha++;
       pilha[toppilha] = i;
     }
 
     String pop(List<String> pilha) {
       String i = pilha[toppilha];
       pilha[toppilha] = '';
-      if (toppilha != 1 / 0) toppilha--;
+      if (toppilha > 0) toppilha--;
       return i;
     }
 
     void pushOperacoes(String i, List<String> pilha) {
-      if (pilha[0] != 1 / 0) topoperadores++;
+      if (pilha[0] != '') topoperadores++;
       pilha[topoperadores] = i;
     }
 
     String popOperacoes(List<String> pilha) {
       String i = pilha[topoperadores];
       pilha[topoperadores] = '';
-      if (topoperadores != 1 / 0) topoperadores--;
+      if (topoperadores > 0) topoperadores--;
       return i;
     }
 
