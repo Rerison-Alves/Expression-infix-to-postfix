@@ -15,64 +15,60 @@ class Infix_to_postfix{
   int toppilha = 0, topoperadores = 0;
 
   bool preced(var x, var y) {
-    if ((x=='*' || x=='/') && (y=='+' || y=='-') ) {
+    if ((x=='*' || x=='/') && (y=='*' || y=='/'|| y=='+')||y=='-' ) {
       return true;
     } else {
       return false;
     }
   }
 
-    String convert(var expressao){
-      for (var x in expressao.split(' ')) {
-        if (x == '+' || x == '-' || x == '*' || x == '/') {
-          if(preced(x, operadores[topoperadores])){
-            String i = popOperacoes(operadores);
-            pushOperacoes(x, operadores);
-            pushOperacoes(i, operadores);
-          }else{
-            pushOperacoes(x, operadores);
-          }
-        }else {
+  String convert(var expressao){
+    for (var x in expressao.split(' ')) {
+      if (x == '+' || x == '-' || x == '*' || x == '/') {
+        if(preced(x, operadores[topoperadores])){
+          pushOperacoes(x, operadores);
+        }else{
+          if(toppilha>0) pushpilha(popOperacoes(operadores), pilha);
+          pushOperacoes(x, operadores);
+        }
+      }else {
         pushpilha(x, pilha);
-        }
-
-      }
-      for(String x in operadores){
-        if(x == '+' || x == '-' || x == '*' || x == '/'){
-          pushpilha(x, pilha);
-        }
-      }
-      var expressaofinal = '';
-      for(String x in pilha){
-        expressaofinal+= x + ' ';
       }
 
-      return expressaofinal;
     }
-
-    void pushpilha(String i, List<String> pilha) {
-      if (pilha[0] != '') toppilha++;
-      pilha[toppilha] = i;
+    for(int i = topoperadores;i>=0;i--){
+      pushpilha(popOperacoes(operadores), pilha);
     }
-
-    String pop(List<String> pilha) {
-      String i = pilha[toppilha];
-      pilha[toppilha] = '';
-      if (toppilha > 0) toppilha--;
-      return i;
+    var expressaofinal = '';
+    for(String x in pilha){
+      expressaofinal+= x + ' ';
     }
-
-    void pushOperacoes(String i, List<String> pilha) {
-      if (pilha[0] != '') topoperadores++;
-      pilha[topoperadores] = i;
-    }
-
-    String popOperacoes(List<String> pilha) {
-      String i = pilha[topoperadores];
-      pilha[topoperadores] = '';
-      if (topoperadores > 0) topoperadores--;
-      return i;
-    }
-
-
+    return expressaofinal;
   }
+
+  void pushpilha(String i, List<String> pilha) {
+    if (pilha[0] != '') toppilha++;
+    pilha[toppilha] = i;
+  }
+
+  String pop(List<String> pilha) {
+    String i = pilha[toppilha];
+    pilha[toppilha] = '';
+    if (toppilha > 0) toppilha--;
+    return i;
+  }
+
+  void pushOperacoes(String i, List<String> pilha) {
+    if (pilha[0] != '') topoperadores++;
+    pilha[topoperadores] = i;
+  }
+
+  String popOperacoes(List<String> pilha) {
+    String i = pilha[topoperadores];
+    pilha[topoperadores] = '';
+    if (topoperadores > 0) topoperadores--;
+    return i;
+  }
+
+
+}
