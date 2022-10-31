@@ -24,7 +24,7 @@ class Infix_to_postfix{
 
   String convert(var expressao){
     for (var x in expressao.split(' ')) {
-      if (x == '+' || x == '-' || x == '*' || x == '/') {
+      if (x == '+' || x == '-' || x == '*' || x == '/' || x == '(') {
         if(preced(x, operadores[topoperadores])){
           pushOperacoes(x, operadores);
         }else{
@@ -32,13 +32,29 @@ class Infix_to_postfix{
           pushOperacoes(x, operadores);
         }
       }else {
-        pushpilha(x, pilha);
+        if (x==')'){
+          String i = '';
+          while(i!='('){
+            i = operadores[topoperadores];
+            if (i=='(') {
+              popOperacoes(operadores);
+            }else{
+              pushpilha(popOperacoes(operadores), pilha);
+            }
+          }
+        }else{
+          pushpilha(x, pilha);
+        }
       }
-
+      print(pilha);
+      print(operadores);
+      print(toppilha);
+      print(topoperadores);
     }
     for(int i = topoperadores;i>=0;i--){
       pushpilha(popOperacoes(operadores), pilha);
     }
+
     var expressaofinal = '';
     for(String x in pilha){
       expressaofinal+= x + ' ';
@@ -47,7 +63,7 @@ class Infix_to_postfix{
   }
 
   void pushpilha(String i, List<String> pilha) {
-    if (pilha[0] != '') toppilha++;
+    if (pilha[0] != '' && pilha[toppilha]!='') toppilha++;
     pilha[toppilha] = i;
   }
 
