@@ -25,43 +25,46 @@ class Infix_to_postfix{
   String convert(var expressao){
     for (var x in expressao.split(' ')) {
       if (x == '+' || x == '-' || x == '*' || x == '/' || x == '(') {
-        if (preced(x, operadores[topoperadores])) {
+        if(preced(x, operadores[topoperadores])){
           pushOperacoes(x, operadores);
-        } else {
-          if (toppilha > 0) pushpilha(popOperacoes(operadores), pilha);
+        }else{
+          if(toppilha>0) pushpilha(popOperacoes(operadores), pilha);
           pushOperacoes(x, operadores);
         }
-
-      } else {
-        if (x == ')') {
+      }else {
+        if (x==')'){
           String i = '';
-          while (i != '(') {
+          while(i!='('){
             i = operadores[topoperadores];
-            if (i == '(') {
+            if (i=='(') {
               popOperacoes(operadores);
+            }else{
+              pushpilha(popOperacoes(operadores), pilha);
             }
-            }
-
+          }
         }
-          if(!regex.hasMatch(x)){
+        if(!regex.hasMatch(x)){
           print('Expressão invalida');
-          exit(1);
+          exit(0);
+        }
+        else{
+          pushpilha(x, pilha);
         }
 
-      }
-      if(topoperadores>1){
-        print('ERRO: OPERADOR A MENOS');
-        exit(0);
-      }
-      if (topoperadores < 0) {
-        print('ERRO: OPERADOR A MAIS');
-        exit(0);
       }
 
       print(pilha);
       print(operadores);
       print(toppilha);
       print(topoperadores);
+    }
+    if(topoperadores < 0){
+      print('ERRO: OPERADOR');
+      exit(0);
+    }
+    if (topoperadores > 0) {
+      print('ERRO: OPERADOR A MAIS');
+      exit(0);
     }
     for(int i = topoperadores;i>=0;i--){
       pushpilha(popOperacoes(operadores), pilha);
