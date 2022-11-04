@@ -53,10 +53,6 @@ class Infix_to_postfix{
 
       }
 
-      print(pilha);
-      print(operadores);
-      print(toppilha);
-      print(topoperadores);
     }
     if(topoperadores < 0){
       print('ERRO: OPERADOR');
